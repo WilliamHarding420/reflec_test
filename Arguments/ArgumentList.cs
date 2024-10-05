@@ -1,9 +1,6 @@
-﻿using ReflectionExample.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReflectionExample.Attributes;
+using ReflectionExample.Interfaces;
+using static ReflectionExample.ArgumentHandler;
 
 namespace ReflectionExample.Arguments
 {
@@ -13,18 +10,19 @@ namespace ReflectionExample.Arguments
         public string Usage { get => "reflectionexample list"; }
         public string Description { get => "Lists all of the existing arguments and their usage."; }
 
-        public bool HandleArgument(string[] args)
+        [Executor]
+        public bool HandleArgument()
         {
             
             ArgumentHandler handler = ArgumentHandler.Instance;
 
-            IArgumentHandler[] handlers = handler.GetHandlers();
+            HandlerInfo[] handlers = handler.GetHandlers();
 
-            foreach (IArgumentHandler argumentHandler in handlers)
+            foreach (HandlerInfo argumentHandler in handlers)
             {
 
-                Console.WriteLine($"Argument: {argumentHandler.Argument}");
-                Console.WriteLine($"\tUsage: {argumentHandler.Usage}\n");
+                Console.WriteLine($"Argument: {argumentHandler.Handler.Argument}");
+                Console.WriteLine($"\tUsage: {argumentHandler.Handler.Usage}\n");
 
             }
 

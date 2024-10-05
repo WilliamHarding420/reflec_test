@@ -15,7 +15,5 @@ namespace ReflectionExample.Interfaces
 
         string Description { get; }
 
-        bool HandleArgument(string[] args);
-
     }
 }

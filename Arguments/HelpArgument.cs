@@ -1,4 +1,6 @@
-﻿using ReflectionExample.Interfaces;
+﻿using ReflectionExample.Attributes;
+using ReflectionExample.Interfaces;
+using static ReflectionExample.ArgumentHandler;
 
 namespace ReflectionExample.Arguments
 {
@@ -10,28 +12,24 @@ namespace ReflectionExample.Arguments
 
         public string Description => "Returns the information regarding the given argument.";
 
-        public bool HandleArgument(string[] args)
+        [Executor]
+        public bool HandleArgument(string argument)
         {
-
-            if (args.Length < 1) 
-            {
-                Console.WriteLine($"No argument supplied.. Usage: {Usage}");
-                return false; 
-            }
 
             ArgumentHandler handler = ArgumentHandler.Instance;
 
-            bool checkArgumentExists = handler.CheckArgumentExist(args[0]);
+            bool checkArgumentExists = handler.CheckArgumentExist(argument);
 
             if (!checkArgumentExists)
             {
-                Console.WriteLine($"Cannot get argument details.. argument {args[0]} cannot be found.");
+                Console.WriteLine($"Cannot get argument details.. argument {argument} cannot be found.");
                 return false; 
             }
 
-            IArgumentHandler argument = handler.GetArgumentHandler(args[0]);
+            HandlerInfo handlerInfo = handler.GetArgumentHandler(argument);
+            IArgumentHandler argumentHandler = handlerInfo.Handler;
 
-            Console.WriteLine($"Argument: {argument.Argument}\n\tDescription: {argument.Description}\n\tUsage: {argument.Usage}");
+            Console.WriteLine($"Argument: {argumentHandler.Argument}\n\tDescription: {argumentHandler.Description}\n\tUsage: {argumentHandler.Usage}");
 
             return true;
 
